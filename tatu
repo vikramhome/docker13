@@ -1,0 +1,39 @@
+[33mcommit 1471579faf80e706b8307861800b09ab88783448[m
+Author: Sean P. Kane <skane@newrelic.com>
+Date:   Sat Nov 22 10:45:37 2014 -0800
+
+    Allow message to be change via ENV variables
+
+[1mdiff --git a/Dockerfile b/Dockerfile[m
+[1mindex 01da09e..a40eade 100644[m
+[1m--- a/Dockerfile[m
+[1m+++ b/Dockerfile[m
+[36m@@ -19,7 +19,7 @@[m [mRUN mkdir -p /var/log/supervisor[m
+ ADD ./supervisord/conf.d/* $SCPATH/[m
+ [m
+ # Application Code[m
+[31m-ADD .js* $AP/[m
+[32m+[m[32mADD *.js* $AP/[m
+ [m
+ WORKDIR $AP[m
+ [m
+[1mdiff --git a/index.js b/index.js[m
+[1mindex 0cff6db..511ec77 100644[m
+[1m--- a/index.js[m
+[1m+++ b/index.js[m
+[36m@@ -2,12 +2,14 @@[m [mvar express = require('express');[m
+ [m
+ // Constants[m
+ var DEFAULT_PORT = 8080;[m
+[32m+[m[32mvar DEFAULT_WHO = "World";[m
+ var PORT = process.env.PORT || DEFAULT_PORT;[m
+[32m+[m[32mvar WHO = process.env.WHO || DEFAULT_WHO;[m
+ [m
+ // App[m
+ var app = express();[m
+ app.get('/', function (req, res) {[m
+[31m-  res.send('Hello World. Wish you were here."\n');[m
+[32m+[m[32m  res.send('Hello ' + WHO + '. Wish you were here.\n');[m
+ });[m
+ [m
+ app.listen(PORT)[m
